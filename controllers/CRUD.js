@@ -30,14 +30,12 @@ const selectAllEmployees = () => {
     );
 };
 
-// need values in an array?
-
 const addDepartment = (deptObj) => {
     const { id, name } = deptObj;
     db.execute(
         'INSERT INTO `department`(id, name) VALUE ?',
         [id, name],
-        function(err, results) {
+        function(err) {
             if (err) throw err
             console.log(`Department ${name} added!`)
         }
@@ -49,7 +47,7 @@ const addRole = (roleObj) => {
     db.execute(
         'INSERT INTO `department`(id, name) VALUE ?',
         [id, title, salary, department_id],
-        function(err, results) {
+        function(err) {
             if (err) throw err
             console.log(`role ${title} added!`)
         }
@@ -61,13 +59,22 @@ const addEmployee = (employeeObj) => {
     db.execute(
         'INSERT INTO `employee`(id, first_name, last_name, role_id, manager_id) VALUE ?',
         [id, first_name, last_name, role_id, manager_id],
-        function(err, results) {
+        function(err) {
             if (err) throw err
             console.log(`Employee ${first_name} ${last_name} added!`)
         }
     );
 };
 
-const updateEmployeeRole = () => {
+const updateEmployeeRole = (id, role) => {
+    db.execute(
+        'UPDATE `employee` SET `role` VALUE ? WHERE `id` VALUE ?',
+        [role, id],
+        function(err) {
+            if (err) throw err
+            console.log(`Updated role for Employee number ${id}`)
+        }
+    );
+};
 
-}
+module.exports = selectAllDepts, selectAllRoles, selectAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole
