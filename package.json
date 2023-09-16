@@ -18,7 +18,8 @@
   "homepage": "https://github.com/aedelfrid/ManageEZ#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "inquirer": "^9.2.11",
-    "mysql2": "^3.6.1"
+    "inquirer": "^8.2.6",
+    "mysql2": "^3.6.1",
+    "uuid": "^9.0.1"
   }
 }
