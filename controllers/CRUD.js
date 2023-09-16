@@ -1,3 +1,4 @@
+const { department } = require('../models');
 const db = require('./config')
 
 const selectAllDepts = async () => {
@@ -35,10 +36,10 @@ const selectAllEmployees = async () => {
 };
 
 const addDepartment = async (deptObj) => {
-    const { id, name } = deptObj;
     return new Promise((resolve, reject) => {
+        const { id, name } = deptObj;
         db.execute(
-            'INSERT INTO `department`(id, name) VALUE ?',
+            'INSERT INTO `department` (`id`, `dept_name`) VALUES (?, ?)',
             [id, name],
             function(err) {
                 return err ? reject(err) : resolve(console.log(`Department ${name} added!`))
@@ -53,7 +54,7 @@ const addRole = async (roleObj) => {
     const { id, title, salary, department_id } = roleObj;
     return new Promise((resolve, reject) => {
         db.execute(
-            'INSERT INTO `department`(id, name) VALUE ?',
+            'INSERT INTO `role`(`id`, `title`, `salary`, `department_id`) VALUES (?,?,?,?)',
             [id, title, salary, department_id],
             function(err) {
                 return err ? reject(err) : resolve(console.log(`role ${title} added!`))
@@ -66,7 +67,7 @@ const addEmployee = async (employeeObj) => {
     const { id, first_name, last_name, role_id, manager_id } = employeeObj;
     return new Promise((resolve, reject) => {
         db.execute(
-            'INSERT INTO `employee`(id, first_name, last_name, role_id, manager_id) VALUE ?',
+            'INSERT INTO `employee`(id, first_name, last_name, role_id, manager_id) VALUES (?,?,?,?,?)',
             [id, first_name, last_name, role_id, manager_id],
             function(err) {
                 return err ? reject(err) : resolve(console.log(`Employee ${first_name} ${last_name} added!`))
@@ -80,7 +81,7 @@ const addEmployee = async (employeeObj) => {
 const updateEmployeeRole = async (id, role) => {
     return new Promise((resolve, reject) => {
         db.execute(
-            'UPDATE `employee` SET `role` VALUE ? WHERE `id` VALUE ?',
+            'UPDATE `employee` SET `role_id` = ? WHERE `id` = ?',
             [role, id],
             function(err) {
                 return err ? reject(err) : resolve(console.log(`Updated role for Employee number ${id}`))
@@ -89,9 +90,14 @@ const updateEmployeeRole = async (id, role) => {
     })
     
 };
+
+const viewByName = () => {
+
+}
+
 //const newFunc = async () => {
-    //const data = await selectAllDepts()
-    //console.log(data)
+    //const deptObj = new department("Human Resources")
+    //await addDepartment(deptObj)
     //db.end()
 //}
 
