@@ -1,32 +1,22 @@
-const { department } = require('../models');
 const db = require('./config')
 
-const selectAllDepts = async () => {
-    return new Promise((resolve, reject) => {
-        db.execute(
-            'SELECT * FROM `department`',
-            function(err, results) {
-                return err ? reject(err) : resolve(results)
-            }
-        );
-    }) 
-};
+const selectAllX = async (table) => {
+    let query;
 
-const selectAllRoles = async () => {
+    switch (table) {
+        case 'department':
+            query = 'SELECT * FROM `department`';
+            break;
+        case 'role':
+            query = 'SELECT * FROM `role`';
+            break;
+        case 'employee':
+            query = 'SELECT * FROM `employee`'
+    }
+    
     return new Promise((resolve, reject) => {
         db.execute(
-            'SELECT * FROM `role`',
-            function(err, results) {
-                return err ? reject(err) : resolve(results)
-            }
-        );
-    })
-};
-
-const selectAllEmployees = async () => {
-    return new Promise((resolve, reject) => {
-        db.execute(
-            'SELECT * FROM `employee`',
+            query,
             function(err, results) {
                 return err ? reject(err) : resolve(results)
             }
@@ -34,6 +24,18 @@ const selectAllEmployees = async () => {
     })
     
 };
+
+const viewByName = (table, id) => {
+    return new Promise((resolve, reject) => {
+        db.execute(
+            'SELECT `employee` SET `role_id` = ? WHERE `id` = ?',
+            [role, id],
+            function(err) {
+                return err ? reject(err) : resolve(console.log(`Updated role for Employee number ${id}`))
+            }
+        );
+    })
+}
 
 const addDepartment = async (deptObj) => {
     return new Promise((resolve, reject) => {
@@ -91,17 +93,14 @@ const updateEmployeeRole = async (id, role) => {
     
 };
 
-const viewByName = () => {
-
-}
-
 //const newFunc = async () => {
-    //const deptObj = new department("Human Resources")
-    //await addDepartment(deptObj)
+    //let table = `employee`
+    //const data = await selectAllX(table)
+    //console.table(data)
     //db.end()
 //}
 
 //newFunc()
 
 
-module.exports = { selectAllDepts, selectAllRoles, selectAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole }
+module.exports = { selectAllX, addDepartment, addRole, addEmployee, updateEmployeeRole }

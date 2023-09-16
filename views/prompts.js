@@ -9,7 +9,11 @@ const prompt = inquirer.createPromptModule();
 
 module.exports = manageEzFlow = () => {
 
+    let table = '';
+
     const inquirerStart = () => prompt(startQuestions).then((answers) => {
+        table = '';
+
         switch (answers.selectOperation) {
             case "View all departments.":
                 deptsView();
@@ -43,7 +47,8 @@ module.exports = manageEzFlow = () => {
     }
 
     const deptsView = async () => {
-        const data = await CRUD.selectAllDepts()
+        table = 'department';
+        const data = await CRUD.selectAllX(table)
         console.table(data)
 
         prompt(deptQuestions[0]).then((answers) => {
@@ -69,7 +74,8 @@ module.exports = manageEzFlow = () => {
     };
 
     const rolesView = async () => {
-        const data = await CRUD.selectAllRoles()
+        table = 'role';
+        const data = await CRUD.selectAllX(table)
         console.table(data)
 
         prompt(roleQuestions[0]).then((answers) => {
@@ -96,7 +102,8 @@ module.exports = manageEzFlow = () => {
     };
 
     const employeesView = async () => {
-        const data = await CRUD.selectAllEmployees();
+        table = 'employee';
+        const data = await CRUD.selectAllX(table)
         console.table(data);
 
         prompt(employeeQuestions[0]).then((answers) => {
