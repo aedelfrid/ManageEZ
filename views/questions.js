@@ -106,7 +106,7 @@ const employeeQuestions = [
             type: "input",
             name: "manager_id",
             message: "What is the id of the new employees manager?",
-            default: 'null'
+            default: 'none'
         }  
     ],
     [
