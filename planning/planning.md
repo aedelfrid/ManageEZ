@@ -69,3 +69,19 @@ Prettify inquirer interface
 Seed data
 
 README
+
+// viewAllDepartments => display - table with departments id/name + add department + go back button
+
+// viewAllRoles => display - table with roles id/title/salary/department(name if possible) + add role + go back button
+
+// viewAllEmployees => display - table with employees id/first_name/last_name/role/department/salary/manager + add employee + go back button
+
+// add department => prompt for name of dept
+
+// add role => prompt for name of role, salary, and department
+
+// add employee => prompt for first, last names, role, manager
+
+// update employee role => prompt to select employee => prompt for new role
+
+// Exit ManageEZ
