@@ -4,4 +4,4 @@ const manageEzFlow = require('./prompts')
 
 // project 3 idea; role playing game/site 
 
-manageEzFlow()
+module.exports = manageEzFlow

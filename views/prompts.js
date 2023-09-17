@@ -9,7 +9,11 @@ const prompt = inquirer.createPromptModule();
 
 module.exports = manageEzFlow = () => {
 
+    let table = '';
+
     const inquirerStart = () => prompt(startQuestions).then((answers) => {
+        table = '';
+
         switch (answers.selectOperation) {
             case "View all departments.":
                 deptsView();
@@ -43,7 +47,8 @@ module.exports = manageEzFlow = () => {
     }
 
     const deptsView = async () => {
-        const data = await CRUD.selectAllDepts()
+        table = 'department';
+        const data = await CRUD.selectAllX(table)
         console.table(data)
 
         prompt(deptQuestions[0]).then((answers) => {
@@ -61,15 +66,18 @@ module.exports = manageEzFlow = () => {
     };
 
     const deptAdd = async () => {
+        table = 'department';
         prompt(deptQuestions[1]).then((answers) => {
             const deptObj = new department(answers.deptName)
-            CRUD.addDepartment(deptObj)
+            CRUD.addX(table, deptObj)
             deptsView();
         })
     };
 
     const rolesView = async () => {
-        const data = await CRUD.selectAllRoles()
+        table = 'role';
+        const data = await CRUD.selectAllX(table)
+
         console.table(data)
 
         prompt(roleQuestions[0]).then((answers) => {
@@ -87,16 +95,18 @@ module.exports = manageEzFlow = () => {
     };
 
     const roleAdd = async () => {
+        table = 'role';
         prompt(roleQuestions[1]).then((answers) => {
             const { title, salary, department_id } = answers;
             const roleObj = new role(title, salary, department_id);
-            CRUD.addRole(roleObj);
+            CRUD.addX(table, roleObj);
             rolesView();
         })
     };
 
     const employeesView = async () => {
-        const data = await CRUD.selectAllEmployees();
+        table = 'employee';
+        const data = await CRUD.selectAllX(table)
         console.table(data);
 
         prompt(employeeQuestions[0]).then((answers) => {
@@ -117,13 +127,15 @@ module.exports = manageEzFlow = () => {
     };
 
     const employeeAdd = async () => {
+        table = 'employee';
         prompt(employeeQuestions[1]).then((answers) => {
             let { first_name, last_name, role_id, manager_id } = answers;
+
             if (manager_id === 'none') {
                 manager_id = null
             }
             const employeeObj = new employee(first_name, last_name, role_id, manager_id);
-            CRUD.addEmployee(employeeObj);
+            CRUD.addX(table, employeeObj);
             employeesView();
         })
     };
