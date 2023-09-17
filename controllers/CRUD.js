@@ -8,76 +8,93 @@ const selectAllX = async (table) => {
             query = 'SELECT * FROM `department`';
             break;
         case 'role':
-            query = 'SELECT * FROM `role`';
+            query = 'SELECT * FROM `role` JOIN `department` ON role.department_id = department.id';
             break;
         case 'employee':
-            query = 'SELECT * FROM `employee`'
-    }
-    
+            query =
+                `SELECT
+                e.id,
+                CONCAT(e.last_name, ', ', e.first_name) AS employee_name,
+                IFNULL(CONCAT(m.last_name, ', ', m.first_name),
+                'Top Manager') AS 'manager',
+                role.title AS title,
+                role.salary AS salary
+            FROM 
+                employee e
+            LEFT JOIN employee m ON
+                m.id = e.manager_id
+            JOIN role ON
+                e.role_id = role.id`
+    };
+
     return new Promise((resolve, reject) => {
         db.execute(
             query,
-            function(err, results) {
+            function (err, results) {
                 return err ? reject(err) : resolve(results)
             }
         );
     })
-    
+
 };
 
-const viewByName = (table, id) => {
-    return new Promise((resolve, reject) => {
-        db.execute(
-            'SELECT `employee` SET `role_id` = ? WHERE `id` = ?',
-            [role, id],
-            function(err) {
-                return err ? reject(err) : resolve(console.log(`Updated role for Employee number ${id}`))
-            }
-        );
-    })
-}
+// where it shows department_id, role_id, manager_id => get dept_name, title, first_name & last_name
+// 
 
-const addDepartment = async (deptObj) => {
-    return new Promise((resolve, reject) => {
-        const { id, name } = deptObj;
-        db.execute(
-            'INSERT INTO `department` (`id`, `dept_name`) VALUES (?, ?)',
-            [id, name],
-            function(err) {
-                return err ? reject(err) : resolve(console.log(`Department ${name} added!`))
-            }
-        );
-    })
-    
-    
-}
+const viewName = (table, id) => {
+    let query;
+    let data;
 
-const addRole = async (roleObj) => {
-    const { id, title, salary, department_id } = roleObj;
-    return new Promise((resolve, reject) => {
-        db.execute(
-            'INSERT INTO `role`(`id`, `title`, `salary`, `department_id`) VALUES (?,?,?,?)',
-            [id, title, salary, department_id],
-            function(err) {
-                return err ? reject(err) : resolve(console.log(`role ${title} added!`))
-            }
-        );
-    })
-}
 
-const addEmployee = async (employeeObj) => {
-    const { id, first_name, last_name, role_id, manager_id } = employeeObj;
+    switch (table) {
+        case 'role':
+            query = 'SELECT `dept_name` FROM `department`'
+            return new Promise((resolve, reject) => {
+                db.execute(
+                    query,
+                    function (err, results) {
+                        return err ? reject(err) : resolve(results)
+                    }
+                );
+            })
+        case 'employee':
+            query = 'SELECT `title`,  FROM `role` WHERE id = ? '
+    };
+
+
+
+};
+
+const addX = (table, obj) => {
+    let query;
+
+    switch (table) {
+        case 'department':
+            const { id, name } = obj;
+            query = 'INSERT INTO `department` (`id`, `dept_name`) VALUES (?, ?)';
+            data = [id, name]
+            break;
+        case 'role':
+            const { role_id, title, salary, department_id } = obj;
+            query = 'INSERT INTO `role`(`id`, `title`, `salary`, `department_id`) VALUES (?,?,?,?)';
+            data = [role_id, title, salary, department_id]
+            break;
+        case 'employee':
+            const { employee_id, first_name, last_name, role_idPK, manager_id } = obj;
+            query = 'INSERT INTO `employee`(id, first_name, last_name, role_id, manager_id) VALUES (?,?,?,?,?)';
+            data = [employee_id, first_name, last_name, role_idPK, manager_id]
+    };
+
     return new Promise((resolve, reject) => {
+
         db.execute(
-            'INSERT INTO `employee`(id, first_name, last_name, role_id, manager_id) VALUES (?,?,?,?,?)',
-            [id, first_name, last_name, role_id, manager_id],
-            function(err) {
-                return err ? reject(err) : resolve(console.log(`Employee ${first_name} ${last_name} added!`))
+            query,
+            data,
+            function (err) {
+                return err ? reject(err) : resolve(console.log(`Added!`))
             }
         );
     })
-    
-    
 };
 
 const updateEmployeeRole = async (id, role) => {
@@ -85,22 +102,13 @@ const updateEmployeeRole = async (id, role) => {
         db.execute(
             'UPDATE `employee` SET `role_id` = ? WHERE `id` = ?',
             [role, id],
-            function(err) {
+            function (err) {
                 return err ? reject(err) : resolve(console.log(`Updated role for Employee number ${id}`))
             }
         );
     })
-    
+
 };
 
-//const newFunc = async () => {
-    //let table = `employee`
-    //const data = await selectAllX(table)
-    //console.table(data)
-    //db.end()
-//}
 
-//newFunc()
-
-
-module.exports = { selectAllX, addDepartment, addRole, addEmployee, updateEmployeeRole }
+module.exports = { selectAllX, addX, viewName, updateEmployeeRole }
