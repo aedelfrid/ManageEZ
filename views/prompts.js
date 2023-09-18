@@ -133,8 +133,10 @@ module.exports = manageEzFlow = () => {
 
             if (manager_id === 'none') {
                 manager_id = null
-            }
+            };
+
             const employeeObj = new employee(first_name, last_name, role_id, manager_id);
+            
             CRUD.addX(table, employeeObj);
             employeesView();
         })

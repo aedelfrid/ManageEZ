@@ -38,33 +38,6 @@ const selectAllX = async (table) => {
 
 };
 
-// where it shows department_id, role_id, manager_id => get dept_name, title, first_name & last_name
-// 
-
-const viewName = (table, id) => {
-    let query;
-    let data;
-
-
-    switch (table) {
-        case 'role':
-            query = 'SELECT `dept_name` FROM `department`'
-            return new Promise((resolve, reject) => {
-                db.execute(
-                    query,
-                    function (err, results) {
-                        return err ? reject(err) : resolve(results)
-                    }
-                );
-            })
-        case 'employee':
-            query = 'SELECT `title`,  FROM `role` WHERE id = ? '
-    };
-
-
-
-};
-
 const addX = (table, obj) => {
     let query;
 
@@ -111,4 +84,4 @@ const updateEmployeeRole = async (id, role) => {
 };
 
 
-module.exports = { selectAllX, addX, viewName, updateEmployeeRole }
+module.exports = { selectAllX, addX, updateEmployeeRole }
