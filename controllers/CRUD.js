@@ -8,7 +8,16 @@ const selectAllX = async (table) => {
             query = 'SELECT * FROM `department`';
             break;
         case 'role':
-            query = 'SELECT * FROM `role` JOIN `department` ON role.department_id = department.id';
+            query = 
+               `select
+                    r.id,
+                    r.title,
+                    r.salary,
+                    department.id AS department_id
+                FROM
+                    role r
+                left join department ON
+                    department_id = department.id`;
             break;
         case 'employee':
             query =
