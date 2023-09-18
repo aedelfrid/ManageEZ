@@ -11,10 +11,14 @@
   
         
   ## Installation
+
+  https://youtu.be/os5eS5mfZfs
         
     Manage EZ can easily be installed by cloning the repository, installing dependencies with 'npm i' in your CLI of choice. Then finally inputting the credentials for your mySQL connection in the config file, which is helpfully located in the controllers folder.  
         
   ## Usage
+
+  https://youtu.be/os5eS5mfZfs
         
     Using Manage EZ is as easy as running the program with the node runtime in your CLI of choice.
 
